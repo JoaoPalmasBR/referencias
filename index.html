@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gestor de Referências Bibliográficas</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    h1 {
+      color: #333;
+    }
+    input, textarea {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 8px;
+      font-size: 14px;
+    }
+    button {
+      padding: 8px 16px;
+      margin: 5px 5px 10px 0;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .referencia {
+      background: #f0f0f0;
+      border-radius: 6px;
+      padding: 10px;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Gestor de Referências Bibliográficas (ABNT)</h1>
+
+  <form id="refForm">
+    <input type="text" id="autor" placeholder="Autor (ex: CRAICE, C.)" required />
+    <input type="text" id="titulo" placeholder="Título" required />
+    <input type="text" id="fonte" placeholder="Fonte (Revista, Livro, etc.)" />
+    <input type="text" id="volume" placeholder="Volume (ex: v.6)" />
+    <input type="text" id="numero" placeholder="Número (ex: n.1)" />
+    <input type="text" id="paginas" placeholder="Páginas (ex: p. 63-85)" />
+    <input type="text" id="data" placeholder="Data (ex: jan./jun. 2015)" />
+    <input type="url" id="link" placeholder="Link para acesso (URL)" />
+    <input type="text" id="acesso" placeholder="Data de acesso (ex: 25 fev. 2025)" />
+
+    <button type="submit">Adicionar Referência</button>
+    <button type="button" onclick="exportarJSON()">Exportar JSON</button>
+    <input type="file" id="importarJSON" accept=".json" />
+    <button type="button" onclick="salvarNoServidor()">Salvar no servidor</button>
+  </form>
+
+  <div id="listaReferencias"></div>
+
+  <script>
+    let referencias = [];
+
+    const form = document.getElementById("refForm");
+    const lista = document.getElementById("listaReferencias");
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const ref = {
+        autor: document.getElementById("autor").value,
+        titulo: document.getElementById("titulo").value,
+        fonte: document.getElementById("fonte").value,
+        volume: document.getElementById("volume").value,
+        numero: document.getElementById("numero").value,
+        paginas: document.getElementById("paginas").value,
+        data: document.getElementById("data").value,
+        link: document.getElementById("link").value,
+        acesso: document.getElementById("acesso").value,
+      };
+
+      referencias.push(ref);
+      renderizarReferencias();
+      form.reset();
+    });
+
+    function formatarReferencia(ref) {
+      let texto = `${ref.autor}. ${ref.titulo}. ${ref.fonte}`;
+      if (ref.volume) texto += `, ${ref.volume}`;
+      if (ref.numero) texto += `, ${ref.numero}`;
+      if (ref.paginas) texto += `, ${ref.paginas}`;
+      if (ref.data) texto += `, ${ref.data}`;
+      if (ref.link) texto += `. Disponível em: ${ref.link}`;
+      if (ref.acesso) texto += `. Acesso em: ${ref.acesso}.`;
+      return texto;
+    }
+
+    function renderizarReferencias() {
+      lista.innerHTML = "";
+      referencias.forEach((ref, index) => {
+        const div = document.createElement("div");
+        div.className = "referencia";
+        div.innerHTML = `
+          <p>${formatarReferencia(ref)}</p>
+          <button onclick="removerReferencia(${index})">Remover</button>
+        `;
+        lista.appendChild(div);
+      });
+    }
+
+    function removerReferencia(index) {
+      referencias.splice(index, 1);
+      renderizarReferencias();
+    }
+
+    function exportarJSON() {
+      const blob = new Blob([JSON.stringify(referencias, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "referencias.json";
+      a.click();
+    }
+
+    function salvarNoServidor() {
+      fetch('salvar.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(referencias)
+      })
+      .then(response => response.text())
+      .then(data => {
+        alert(data);
+      })
+      .catch(error => {
+        alert('Erro ao salvar: ' + error);
+      });
+    }
+
+    document.getElementById("importarJSON").addEventListener("change", function (event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        try {
+          const json = JSON.parse(e.target.result);
+          if (Array.isArray(json)) {
+            referencias = json;
+            renderizarReferencias();
+          } else {
+            alert("Arquivo inválido");
+          }
+        } catch (err) {
+          alert("Erro ao importar JSON");
+        }
+      };
+      reader.readAsText(file);
+    });
+    function gerarTexto() {
+      let textoFinal = referencias.map(ref => formatarReferencia(ref)).join('\n\n');
+      document.getElementById("outputTexto").value = textoFinal;
+    }
+
+    function copiarTexto() {
+      const texto = document.getElementById("outputTexto");
+      texto.select();
+      texto.setSelectionRange(0, 99999); // para mobile
+      document.execCommand("copy");
+      alert("Referências copiadas para a área de transferência!");
+    }
+  </script>
+  <hr />
+  <h2>Exportar em texto</h2>
+  <button onclick="gerarTexto()">Copiar todas como texto</button>
+  <button onclick="copiarTexto()">Copiar para área de transferência</button>
+  <br />
+  <textarea id="outputTexto" rows="10" style="width: 100%; margin-top: 10px;"></textarea>
+</body>
+</html>
