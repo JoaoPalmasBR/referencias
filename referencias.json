@@ -31,5 +31,82 @@
         "data": "2021",
         "link": "",
         "acesso": "11 abril 2025"
+    },
+    {
+        "autor": "HUIZINGA, J",
+        "titulo": "Homo Ludens: o jogo como elemento da cultura",
+        "fonte": "São Paulo: Perspectiva",
+        "volume": "",
+        "numero": "",
+        "paginas": "",
+        "data": "1949",
+        "link": "",
+        "acesso": "12 abril 2025"
+    },
+    {
+        "autor": "SILVA, L. R. da; MACHADO, D. A. A",
+        "titulo": "Jogos digitais e sustentabilidade: reflexões sobre práticas ecológicas em tempos digitais.",
+        "fonte": "Revista Ibero-americana de Estudos em Educação",
+        "volume": "",
+        "numero": "",
+        "paginas": "",
+        "data": "2021",
+        "link": "",
+        "acesso": "12 abril 2025"
+    },
+    {
+        "autor": "NIELSEN, J",
+        "titulo": "Usability Engineering",
+        "fonte": "San Francisco: Morgan Kaufmann",
+        "volume": "",
+        "numero": "",
+        "paginas": "",
+        "data": "1995",
+        "link": "",
+        "acesso": "12 abril 2025"
+    },
+    {
+        "autor": "BGA",
+        "titulo": "BOARD GAME ARENA",
+        "fonte": "",
+        "volume": "",
+        "numero": "",
+        "paginas": "",
+        "data": "",
+        "link": "https://boardgamearena.com",
+        "acesso": "12 abril 2025"
+    },
+    {
+        "autor": "Tabletopia",
+        "titulo": "TABLETOPIA",
+        "fonte": "",
+        "volume": "",
+        "numero": "",
+        "paginas": "",
+        "data": "2014",
+        "link": "https://tabletopia.com",
+        "acesso": "12 abril 2025"
+    },
+    {
+        "autor": "Liochess",
+        "titulo": "LICHESS",
+        "fonte": "",
+        "volume": "",
+        "numero": "",
+        "paginas": "",
+        "data": "2010",
+        "link": "https://lichess.org",
+        "acesso": "12 abril 2025"
+    },
+    {
+        "autor": "W3C",
+        "titulo": "WCAG. Web Content Accessibility Guidelines 2.1",
+        "fonte": "",
+        "volume": "",
+        "numero": "",
+        "paginas": "",
+        "data": "12 December 2024",
+        "link": "https://www.w3.org/TR/WCAG21",
+        "acesso": "12 abril 2025"
     }
 ]
